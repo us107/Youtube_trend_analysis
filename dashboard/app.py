@@ -6,7 +6,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import io
 import base64
-
+from scipy import sparse
+import scipy
+from scipy.sparse import csr_matrix
+from sklearn.metrics.pairwise import cosine_similarity
 app = Flask(__name__)
 
 # Load models
