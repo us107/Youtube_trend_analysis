@@ -13,7 +13,7 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/analysis">Video Analysis</a></li>
-                <li><a href="/predict">Make Prediction</a></li>
+                <li><a href="/predictions">Make Prediction</a></li>
             </ul>
         </nav>
     </header>
@@ -36,6 +36,7 @@
     </main>
 
     <script>
+        // Optional: AJAX request for dynamic prediction
         document.getElementById('prediction-form').onsubmit = async (e) => {
             e.preventDefault();
             const features = [
@@ -52,13 +53,8 @@
                 body: JSON.stringify({ features })
             });
 
-            if (response.ok) {
-                const result = await response.json();
-                alert(`Prediction: Linear Regression: ${result.linear_regression_prediction}, K-Means Cluster: ${result.kmeans_cluster}`);
-            } else {
-                const error = await response.json();
-                alert(`Error: ${error.error}`);
-            }
+            const result = await response.json();
+            alert(`Prediction: Linear Regression: ${result.linear_regression_prediction}, K-Means Cluster: ${result.kmeans_cluster}`);
         };
     </script>
 </body>
