@@ -66,7 +66,7 @@ def analysis():
         return render_template('error.html', message=error_message)
 
 # Predictions form
-@app.route('/predictions', methods=['GET'])
+@app.route('/prediction', methods=['GET'])
 def predictions_form():
     # Render a form for the user to input data
     return render_template('predictions.html')
@@ -75,28 +75,35 @@ def predictions_form():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Handle form or JSON submission
+        # For JSON data (AJAX request)
         if request.is_json:
             data = request.get_json()
-            features = pd.DataFrame([data['features']], columns=['feature1', 'feature2', 'feature3'])
+            features = np.array(data['features']).reshape(1, -1)
         else:
-            features = pd.DataFrame([[
-                float(request.form.get('feature1', 0)),
-                float(request.form.get('feature2', 0)),
-                float(request.form.get('feature3', 0))
-            ]], columns=['feature1', 'feature2', 'feature3'])
+            # For form submission (POST without AJAX)
+            features = [
+                float(request.form.get('likes', 0)),  # Likes
+                float(request.form.get('comments', 0)),  # Comments
+                float(request.form.get('views', 0))  # Views
+            ]
+            features = np.array(features).reshape(1, -1)
 
-        # Make predictions
+        # Predictions
         lr_prediction = linear_regression_model.predict(features)
         kmeans_cluster = kmeans_model.predict(features)
 
-        # Return results
+        # Response for AJAX request
+        if request.is_json:
+            return jsonify({
+                'linear_regression_prediction': float(lr_prediction[0]),
+                'kmeans_cluster': int(kmeans_cluster[0])
+            })
+        # Response for form submission
         return render_template('predict_results.html', 
                                lr_prediction=lr_prediction[0], 
                                kmeans_cluster=kmeans_cluster[0])
     except Exception as e:
         return render_template('error.html', message=str(e)), 500
-
 
 
 # Error handlers
