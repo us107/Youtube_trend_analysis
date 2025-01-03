@@ -20,18 +20,15 @@
     <main>
         <section>
             <h2>Enter Video Details for Prediction</h2>
-            <form action="/predict" method="POST" id="prediction-form">
+            <form action="/predictions" method="POST" id="prediction-form">
                 <label for="likes">Likes:</label>
                 <input type="number" id="likes" name="likes" required>
                 
                 <label for="comments">Comments:</label>
                 <input type="number" id="comments" name="comments" required>
                 
-                <label for="views">Views:</label>
-                <input type="number" id="views" name="views" required>
-                
                 <button type="submit">Predict</button>
-            </form>            
+            </form>                 
         </section>
     </main>
 </body>

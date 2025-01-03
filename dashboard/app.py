@@ -81,12 +81,9 @@ def predict():
             features = np.array(data['features']).reshape(1, -1)
         else:
             # For form submission (POST without AJAX)
-            features = [
-                float(request.form.get('likes', 0)),  # Likes
-                float(request.form.get('comments', 0)),  # Comments
-                float(request.form.get('views', 0))  # Views
-            ]
-            features = np.array(features).reshape(1, -1)
+            likes = float(request.form.get('likes', 0))
+            comments = float(request.form.get('comments', 0))
+            features = np.array([likes, comments]).reshape(1, -1)
 
         # Predictions
         lr_prediction = linear_regression_model.predict(features)
@@ -104,6 +101,7 @@ def predict():
                                kmeans_cluster=kmeans_cluster[0])
     except Exception as e:
         return render_template('error.html', message=str(e)), 500
+
 
 
 # Error handlers
